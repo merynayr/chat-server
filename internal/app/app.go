@@ -11,6 +11,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/reflection"
+
+	descChat "github.com/merynayr/chat-server/pkg/chat_v1"
 )
 
 var configPath string
@@ -78,12 +80,12 @@ func (a *App) initServiceProvider(_ context.Context) error {
 	return nil
 }
 
-func (a *App) initGRPCServer(_ context.Context) error {
+func (a *App) initGRPCServer(ctx context.Context) error {
 	a.grpcServer = grpc.NewServer(grpc.Creds(insecure.NewCredentials()))
 
 	reflection.Register(a.grpcServer)
 
-	// descChat.RegisterChatV1Server(a.grpcServer, a.serviceProvider.ChatAPI(ctx))
+	descChat.RegisterChatV1Server(a.grpcServer, a.serviceProvider.ChatAPI(ctx))
 
 	return nil
 }

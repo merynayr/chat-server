@@ -35,13 +35,13 @@ generate-chat-api:
 	api/chat_v1/chat.proto
 
 
-make docker:
+docker:
 	docker compose up --build -d
 
 build:
 	GOOS=linux GOARCH=amd64 go build -o chat cmd/grpc_server/main.go
 
-make run: build
+run: build
 	./chat -config-path=local.env
 
 local-migration-status:
