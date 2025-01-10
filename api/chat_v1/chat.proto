@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package chat_v1;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+option go_package = "github.com/merynayr/chat-server/pkg/chat_v1;chat_v1";
+
+service ChatV1 {
+  rpc CreateChat(CreateChatRequest) returns (CreateChatResponse);
+  rpc DeleteChat(DeleteChatRequest) returns (google.protobuf.Empty);
+  rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty);
+}
+
+message MessageInfo {
+  google.protobuf.StringValue from = 1;
+  google.protobuf.StringValue text = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message CreateChatRequest {
+  repeated string usernames = 1;
+}
+
+message CreateChatResponse {
+  int64 id = 1;
+}
+
+message DeleteChatRequest {
+  int64 id = 1;
+}
+
+message SendMessageRequest {
+  MessageInfo message_info = 1;
+}
