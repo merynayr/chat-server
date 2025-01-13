@@ -5,12 +5,19 @@ import (
 	"github.com/merynayr/chat-server/internal/repository"
 )
 
-// const (
-// 	tableName = "chats"
+const (
+	tableNameChat     = "chat"
+	tableNameMessages = "messages"
+	tableNameRoster   = "roster"
 
-// 	idColumn       = "id"
-// 	chatNameColumn = "chat_name"
-// )
+	chatIDColumn    = "chat_id"
+	userIDColumn    = "user_id"
+	messageIDColumn = "message_id"
+
+	chatNameColumn  = "chat_name"
+	contectColumn   = "contect"
+	createdAtColumn = "created_at"
+)
 
 // Структура репо с клиентом базы данных (интерфейсом)
 type repo struct {
