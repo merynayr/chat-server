@@ -21,7 +21,8 @@ message MessageInfo {
 }
 
 message CreateChatRequest {
-  repeated string usernames = 1;
+  string chatName = 1;
+  repeated int64 users_id = 2;
 }
 
 message CreateChatResponse {
