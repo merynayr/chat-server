@@ -14,12 +14,6 @@ service ChatV1 {
   rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty);
 }
 
-message MessageInfo {
-  google.protobuf.StringValue from = 1;
-  google.protobuf.StringValue text = 2;
-  google.protobuf.Timestamp timestamp = 3;
-}
-
 message CreateChatRequest {
   string chatName = 1;
   repeated int64 users_id = 2;
@@ -34,5 +28,8 @@ message DeleteChatRequest {
 }
 
 message SendMessageRequest {
-  MessageInfo message_info = 1;
+  google.protobuf.Int64Value chat_id = 1;
+  google.protobuf.Int64Value user_id = 2;
+  google.protobuf.StringValue text = 3;
+  google.protobuf.Timestamp timestamp = 4;
 }

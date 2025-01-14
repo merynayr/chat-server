@@ -15,14 +15,8 @@ type Chat struct {
 // MessageInfo модель сообщения в сервисном слое
 type MessageInfo struct {
 	ID        int64
-	Chat      *Chat
-	User      *User
+	ChatID    int64
+	UserID    int64
 	Text      string
 	CreatedAt time.Time
-}
-
-// User модель пользователя в сервисном слое
-type User struct {
-	ID   int64
-	Name string
 }
