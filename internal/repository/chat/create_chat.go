@@ -16,7 +16,7 @@ func (r *repo) CreateChat(ctx context.Context, chat *model.Chat) (int64, error) 
 		PlaceholderFormat(sq.Dollar).
 		Columns(chatNameColumn, createdAtColumn).
 		Values(chat.ChatName, chat.CreatedAt).
-		Suffix("RETURNING chat_id").
+		Suffix("RETURNING " + chatIDColumn).
 		ToSql()
 
 	if err != nil {

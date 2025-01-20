@@ -12,10 +12,21 @@ func ToChatFromDesc(chat *desc.CreateChatRequest) *model.Chat {
 		return nil
 	}
 
-	return &model.Chat{
-		ChatName:  chat.ChatName,
-		Usernames: chat.UsersId,
+	m := &model.Chat{}
+
+	if chat.ChatName != "" {
+		m.ChatName = chat.ChatName
+	} else {
+		return nil
 	}
+
+	if len(chat.UsersId) > 0 {
+		m.Usernames = chat.UsersId
+	} else {
+		return nil
+	}
+
+	return m
 }
 
 // ToMessageFromDesc конвертирует модель сообщения API слоя в
