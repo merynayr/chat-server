@@ -13,7 +13,7 @@ func (s *srv) SendMessage(ctx context.Context, message *model.MessageInfo) error
 		var exist bool
 
 		exist, errTx = s.chatRepo.ChatExists(ctx, message.ChatID)
-		if !exist {
+		if !exist && errTx == nil {
 			return fmt.Errorf("failed to send message: chat %d does not exist", message.ChatID)
 		}
 		if errTx != nil {
