@@ -13,6 +13,6 @@ WORKDIR /root/
 
 COPY --from=builder /github.com/merynayr/chat-server/source/bin/chat_server .
 
-COPY local.env .
+COPY env.local .
 
 CMD ["./chat_server", "-config-path=local.env"]
