@@ -15,7 +15,7 @@ const (
 	messageIDColumn = "message_id"
 
 	chatNameColumn  = "chat_name"
-	contectColumn   = "contect"
+	contectColumn   = "content"
 	createdAtColumn = "created_at"
 )
 

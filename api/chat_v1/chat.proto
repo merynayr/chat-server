@@ -5,23 +5,57 @@ package chat_v1;
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
+import "google/api/annotations.proto"; 
+import "validate/validate.proto";
+import "protoc-gen-openapiv2/options/annotations.proto";
+
 
 option go_package = "github.com/merynayr/chat-server/pkg/chat_v1;chat_v1";
 
-service ChatV1 {
-  rpc CreateChat(CreateChatRequest) returns (CreateChatResponse);
-  rpc DeleteChat(DeleteChatRequest) returns (google.protobuf.Empty);
-  rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty);
-}
 
-message MessageInfo {
-  google.protobuf.StringValue from = 1;
-  google.protobuf.StringValue text = 2;
-  google.protobuf.Timestamp timestamp = 3;
+option (grpc.gateway.protoc_gen_openapiv2.options.openapiv2_swagger) = {
+  info: {
+      title: "Chat API"
+      version: "1.0.0"
+      contact: {
+          name: "Dmitry Boyarkin"
+          email: "boyarkin_dima2@mail.ru"
+      };
+  };
+
+  host: "localhost:8081",
+  schemes: HTTP,
+  schemes: HTTPS,
+  consumes: "application/json",
+  produces: "application/json",
+};
+
+
+service ChatV1 {
+  // Создает новый чат
+  rpc CreateChat(CreateChatRequest) returns (CreateChatResponse) {
+    option (google.api.http) = {
+      post: "/chat/v1/create"
+      body: "*"
+    };
+  }
+  // Удаляет чат по id
+  rpc DeleteChat(DeleteChatRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      delete: "/chat/v1/delete/{id}"
+    };
+  }
+  // Отправляет сообщение в чат
+  rpc SendMessage(SendMessageRequest) returns (google.protobuf.Empty) {
+    option (google.api.http) = {
+      post: "/chat/v1/send_message"
+      body: "*"
+    };
+  }
 }
 
 message CreateChatRequest {
-  string chatName = 1;
+  string chatName = 1 [(validate.rules).string = {min_len: 1, max_len: 64}];
   repeated int64 users_id = 2;
 }
 
@@ -34,5 +68,8 @@ message DeleteChatRequest {
 }
 
 message SendMessageRequest {
-  MessageInfo message_info = 1;
+  google.protobuf.Int64Value chat_id = 1;
+  google.protobuf.Int64Value user_id = 2;
+  google.protobuf.StringValue text = 3;
+  google.protobuf.Timestamp timestamp = 4;
 }

@@ -16,7 +16,7 @@ func (r *repo) CreateChat(ctx context.Context, chat *model.Chat) (int64, error) 
 		PlaceholderFormat(sq.Dollar).
 		Columns(chatNameColumn, createdAtColumn).
 		Values(chat.ChatName, chat.CreatedAt).
-		Suffix("RETURNING chat_id").
+		Suffix("RETURNING " + chatIDColumn).
 		ToSql()
 
 	if err != nil {
@@ -34,29 +34,5 @@ func (r *repo) CreateChat(ctx context.Context, chat *model.Chat) (int64, error) 
 		log.Printf("failed to insert chat: %s", err)
 		return 0, fmt.Errorf("failed to insert chat: %w", err)
 	}
-
-	for _, user := range chat.Usernames {
-		query, args, err = sq.Insert(tableNameRoster).
-			PlaceholderFormat(sq.Dollar).
-			Columns(chatIDColumn, userIDColumn).
-			Values(chatID, user).
-			ToSql()
-
-		if err != nil {
-			return 0, fmt.Errorf("failed to build roster insertion query: %w", err)
-		}
-
-		q := db.Query{
-			Name:     "chat_repository.CreateRoster",
-			QueryRaw: query,
-		}
-
-		_, err = r.db.DB().ExecContext(ctx, q, args...)
-		if err != nil {
-			return 0, fmt.Errorf("failed to insert roster: %w", err)
-		}
-	}
-
-	log.Printf("%s: creating chat with id: %d", q.Name, chatID)
 	return chatID, nil
 }

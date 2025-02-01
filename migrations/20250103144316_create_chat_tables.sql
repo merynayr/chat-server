@@ -12,7 +12,7 @@ CREATE TABLE roster
     user_id BIGINT                                             NOT NULL,
     UNIQUE (chat_id, user_id)
 );
-
+    
 CREATE TABLE messages
 (
     message_id      BIGSERIAL PRIMARY KEY,
